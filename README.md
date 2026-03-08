@@ -15,11 +15,11 @@
 
 ## Installation
 
-Simply download the `PCollections.bas` module and import it into your VBA project:
+Simply download the `pth_PCollections.pcol_bas` module and import it into your VBA project:
 
 1. Open the **VBA Editor** (`ALT + F11`)
 2. Go to **File** → **Import File...**
-3. Select `PCollections.bas` and click **Open**
+3. Select `pth_PCollections.pcol_bas` and click **Open**
 
 Alternatively, copy and paste the code into a new module.
 
@@ -31,7 +31,7 @@ Alternatively, copy and paste the code into a new module.
 Dim Col1 As New Collection, Col2 As New Collection
 Col1.Add "A": Col1.Add "B"
 Col2.Add "C": Col2.Add "D"
-PCollections.Extend Col1, Col2  ' Col1 now contains A, B, C, D
+pth_PCollections.pcol_Extend Col1, Col2  ' Col1 now contains A, B, C, D
 ```
 
 ### 2. Finding Items and Their Indices
@@ -43,13 +43,13 @@ Col.Add "Banana"
 Col.Add "Apple"
 
 Dim Result As Collection
-Set Result = PCollections.FindAll(Col, "Apple") ' Returns a Collection with both "Apple" items
+Set Result = pth_PCollections.pcol_FindAll(Col, "Apple") ' Returns a Collection with both "Apple" items
 
 Dim Index As Long
-Index = PCollections.FindIndex(Col, "Banana") ' Returns 2
+Index = pth_PCollections.pcol_FindIndex(Col, "Banana") ' Returns 2
 
 Dim LastIndex As Long
-LastIndex = PCollections.FindLastIndex(Col, "Apple") ' Returns 3
+LastIndex = pth_PCollections.pcol_FindLastIndex(Col, "Apple") ' Returns 3
 ```
 
 ### 3. Converting Between Arrays and Collections
@@ -59,20 +59,20 @@ Dim Arr As Variant
 Arr = Array("X", "Y", "Z")
 
 Dim Col As Collection
-Set Col = PCollections.FromArray(arr)  ' Converts array to Collection
+Set Col = pth_PCollections.pcol_FromArray(arr)  ' Converts array to Collection
 
 Dim BackToArray As Variant
-BackToArray = PCollections.ToArray(Col) ' Converts Collection back to array
+BackToArray = pth_PCollections.pcol_ToArray(Col) ' Converts Collection back to array
 ```
 
 ### 4. Checking for Existence of Items or Keys
 
 ```vba
 Dim Exists As Boolean
-Exists = PCollections.ItemExists(Col, "X") ' Returns True if "X" is in the Collection
+Exists = pth_PCollections.pcol_ItemExists(Col, "X") ' Returns True if "X" is in the Collection
 
 Dim IsKeyExists As Boolean
-IsKeyExists = PCollections.KeyExists(Col, 1) ' Returns True if a key exists
+IsKeyExists = pth_PCollections.pcol_KeyExists(Col, 1) ' Returns True if a key exists
 ```
 
 ### 5. Working with Collections
@@ -83,39 +83,39 @@ Col.Add 10
 Col.Add 20
 Col.Add 5
 
-Debug.Print PCollections.Max(Col)  ' Prints 20
-Debug.Print PCollections.Min(Col)  ' Prints 5
-Debug.Print PCollections.Join(Col, ", ") ' Prints "10, 20, 5"
+Debug.Print pth_PCollections.pcol_Max(Col)  ' Prints 20
+Debug.Print pth_PCollections.pcol_Min(Col)  ' Prints 5
+Debug.Print pth_PCollections.pcol_Join(Col, ", ") ' Prints "10, 20, 5"
 ```
 
 ## Available Functions
 
 ### Collection Manipulation
 
-`Extend(Destination As Collection, Source As Collection)`: Merges two Collections.
+`pcol_Extend(Destination As Collection, Source As Collection)`: Merges two Collections.
 
 ### Searching & Indexing
 
-`FindAll(SourceCollection As Collection, Item As Variant)`: Returns a Collection of all matching items.
-`FindIndex(SourceCollection As Collection, Item As Variant)`: Returns the first index of an item.
-`FindLastIndex(SourceCollection As Collection, Item As Variant)`: Returns the last index of an item.
-`ItemExists(SourceCollection As Collection, Item As Variant)`: Checks if an item exists.
-`KeyExists(SourceCollection As Collection, Key As Variant)`: Checks if a key exists in a Collection.
+`pcol_FindAll(SourceCollection As Collection, Item As Variant)`: Returns a Collection of all matching items.
+`pcol_FindIndex(SourceCollection As Collection, Item As Variant)`: Returns the first index of an item.
+`pcol_FindLastIndex(SourceCollection As Collection, Item As Variant)`: Returns the last index of an item.
+`pcol_ItemExists(SourceCollection As Collection, Item As Variant)`: Checks if an item exists.
+`pcol_KeyExists(SourceCollection As Collection, Key As Variant)`: Checks if a key exists in a Collection.
 
 ### Conversion
 
-`FromArray(SourceArray As Variant)`: Converts an array to a Collection.
-`ToArray(SourceCollection As Collection)`: Converts a Collection to an array.
+`pcol_FromArray(SourceArray As Variant)`: Converts an array to a Collection.
+`pcol_ToArray(SourceCollection As Collection)`: Converts a Collection to an array.
 
 ### String Operations
 
-`Join(SourceCollection As Collection, Delimiter As String)`: Joins Collection items into a string.
-`Split(Expression As String, Delimiter As String)`: Splits a string into a Collection.
+`pcol_Join(SourceCollection As Collection, Delimiter As String)`: Joins Collection items into a string.
+`pcol_Split(Expression As String, Delimiter As String)`: Splits a string into a Collection.
 
 ### Mathematical Operations
 
-`Max(SourceCollection As Collection)`: Returns the maximum value.
-`Min(SourceCollection As Collection)`: Returns the minimum value.
+`pcol_Max(SourceCollection As Collection)`: Returns the maximum value.
+`pcol_Min(SourceCollection As Collection)`: Returns the minimum value.
 
 ## Why Use PCollections?
 

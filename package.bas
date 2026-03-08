@@ -2,8 +2,10 @@ Attribute VB_Name = "package"
 '@Folder("PCollectionsProject")
 '{
 '  "name": "PCollections",
-'  "version": "1.0.0",
+'  "version": "1.1.0",
+'  "prefix": "PCOL",
+'  "license": "MIT",
 '  "description": "Advanced VBA Collection Utilities",
-'  "author": "artemdorozhkin",
-'  "git": "https://github.com/artemdorozhkin/pcollection.git"
+'  "author": "Pear-VBA",
+'  "homepage": "https://github.com/Pear-VBA/pcollection.git"
 '}
