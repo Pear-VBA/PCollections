@@ -43,7 +43,7 @@ Private Sub TestItemExistsTrue()
     Coll.Add "3c"
 
     'Assert:
-    Assert.IsTrue PCollections.ItemExists(Coll, "2b")
+    Assert.IsTrue pcol_PCollections.pcol_ItemExists(Coll, "2b")
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -67,7 +67,7 @@ Private Sub TestItemExistsFalse()
     Coll.Add "3c"
 
     'Assert:
-    Assert.IsFalse PCollections.ItemExists(Coll, "2a")
+    Assert.IsFalse pcol_PCollections.pcol_ItemExists(Coll, "2a")
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -91,7 +91,7 @@ Private Sub TestKeyExistsTrue()
     Coll.Add Item:=3, Key:="3c"
 
     'Assert:
-    Assert.IsTrue PCollections.KeyExists(Coll, "2b")
+    Assert.IsTrue pcol_PCollections.pcol_KeyExists(Coll, "2b")
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -116,7 +116,7 @@ Private Sub TestKeyExistsFalse()                        'TODO Rename test
     Coll.Add "3c"
 
     'Assert:
-    Assert.IsFalse PCollections.KeyExists(Coll, "2a")
+    Assert.IsFalse pcol_PCollections.pcol_KeyExists(Coll, "2a")
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -140,7 +140,7 @@ Private Sub TestJoin()
     Coll.Add "3c"
 
     'Assert:
-    Assert.AreEqual "1a, 2b, 3c", PCollections.Join(Coll, ", ")
+    Assert.AreEqual "1a, 2b, 3c", pcol_PCollections.pcol_Join(Coll, ", ")
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -157,7 +157,7 @@ Private Sub TestSplit()
     On Error GoTo TestFail
     
     Dim Coll As Collection
-    Set Coll = PCollections.Split("1a, 2b, 3c", ", ")
+    Set Coll = pcol_PCollections.pcol_Split("1a, 2b, 3c", ", ")
 
     'Assert:
     Assert.AreEqual "1a", Coll(1)
@@ -186,7 +186,7 @@ Private Sub TestToArray()
     Coll.Add "3c"
 
     'Assert:
-    Assert.SequenceEquals Array("1a", "2b", "3c"), PCollections.ToArray(Coll)
+    Assert.SequenceEquals Array("1a", "2b", "3c"), pcol_PCollections.pcol_ToArray(Coll)
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -203,7 +203,7 @@ Private Sub TestFromArray()
     On Error GoTo TestFail
     
     Dim Coll As Collection
-    Set Coll = PCollections.FromArray( _
+    Set Coll = pcol_PCollections.pcol_FromIterable( _
         Array("1a", "2b", "3c") _
     )
 
@@ -228,7 +228,7 @@ Private Sub TestFromEmptyArray()
     On Error GoTo TestFail
     
     Dim Coll As Collection
-    Set Coll = PCollections.FromArray(Array())
+    Set Coll = pcol_PCollections.pcol_FromIterable(Array())
 
     'Assert:
     Assert.AreEqual Conversion.CLng(0), Coll.Count
@@ -249,7 +249,7 @@ Private Sub TestNonArray()
     On Error GoTo TestFail
     
     Dim Coll As Collection
-    Set Coll = PCollections.FromArray(4)
+    Set Coll = pcol_PCollections.pcol_FromIterable(4)
 
     'Assert:
     Dim Dummy As Long
@@ -267,6 +267,7 @@ TestFail:
         Resume Assert
     End If
 End Sub
+
 '@TestMethod("Extend")
 Private Sub TestExtend()
     On Error GoTo TestFail
@@ -285,7 +286,7 @@ Private Sub TestExtend()
     Coll2.Add "5e"
     Coll2.Add "6f"
 
-    PCollections.Extend Coll1, Coll2
+    pcol_PCollections.pcol_Extend Coll1, Coll2
     
     'Assert:
     Assert.AreEqual Conversion.CLng(6), Coll1.Count
@@ -306,6 +307,37 @@ TestFail:
     Resume TestExit
 End Sub
 
+'@TestMethod("Extend")
+Private Sub TestExtendMissingDestination()
+    Const ExpectedError As Long = 424
+    On Error GoTo TestFail
+    
+    'Arrange:
+    Dim Coll1 As Collection
+
+    Dim Coll2 As Collection
+    Set Coll2 = New Collection
+
+    Coll2.Add "4d"
+    Coll2.Add "5e"
+    Coll2.Add "6f"
+
+    pcol_PCollections.pcol_Extend Coll1, Coll2
+    'Act:
+    
+Assert:
+    Assert.Fail "Expected error was not raised"
+
+TestExit:
+    Exit Sub
+TestFail:
+    If Err.Number = ExpectedError Then
+        Resume TestExit
+    Else
+        Resume Assert
+    End If
+End Sub
+
 '@TestMethod("FindAll")
 Private Sub TestFindAll()
     On Error GoTo TestFail
@@ -321,7 +353,7 @@ Private Sub TestFindAll()
     Coll1.Add "3c"
 
     Dim Coll2 As Collection
-    Set Coll2 = PCollections.FindAll(Coll1, "2b")
+    Set Coll2 = pcol_PCollections.pcol_FindAll(Coll1, "2b")
     
     'Assert:
     Assert.AreEqual Conversion.CLng(2), Coll2.Count
@@ -350,8 +382,8 @@ Private Sub TestFindIndex()
     Coll.Add "3c"
 
     'Assert:
-    Assert.AreEqual Conversion.CLng(2), PCollections.FindIndex(Coll, "2b")
-    Assert.AreEqual Conversion.CLng(-1), PCollections.FindIndex(Coll, "4e")
+    Assert.AreEqual Conversion.CLng(2), pcol_PCollections.pcol_FindIndex(Coll, "2b")
+    Assert.AreEqual Conversion.CLng(-1), pcol_PCollections.pcol_FindIndex(Coll, "4e")
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -378,8 +410,8 @@ Private Sub TestFindLastIndex()
     Coll.Add "3c"
 
     'Assert:
-    Assert.AreEqual Conversion.CLng(5), PCollections.FindLastIndex(Coll, "2b")
-    Assert.AreEqual Conversion.CLng(-1), PCollections.FindLastIndex(Coll, "4e")
+    Assert.AreEqual Conversion.CLng(5), pcol_PCollections.pcol_FindLastIndex(Coll, "2b")
+    Assert.AreEqual Conversion.CLng(-1), pcol_PCollections.pcol_FindLastIndex(Coll, "4e")
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -406,7 +438,7 @@ Private Sub TestMax()
     Coll.Add 4
 
     'Assert:
-    Assert.AreEqual 482, PCollections.Max(Coll)
+    Assert.AreEqual 482, pcol_PCollections.pcol_Max(Coll)
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -431,7 +463,7 @@ Private Sub TestMaxStrings()
     Coll.Add "c"
 
     'Assert:
-    Assert.AreEqual "f", PCollections.Max(Coll)
+    Assert.AreEqual "f", pcol_PCollections.pcol_Max(Coll)
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -458,7 +490,7 @@ Private Sub TestMin()
     Coll.Add 4
 
     'Assert:
-    Assert.AreEqual 1, PCollections.Min(Coll)
+    Assert.AreEqual 1, pcol_PCollections.pcol_Min(Coll)
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -483,7 +515,7 @@ Private Sub TestMinStrings()
     Coll.Add "c"
 
     'Assert:
-    Assert.AreEqual "a", PCollections.Min(Coll)
+    Assert.AreEqual "a", pcol_PCollections.pcol_Min(Coll)
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -510,7 +542,7 @@ Private Sub TestPop()
     Coll.Add 4
 
     'Assert:
-    Assert.AreEqual 4, PCollections.Pop(Coll)
+    Assert.AreEqual 4, pcol_PCollections.pcol_Pop(Coll)
 
 TestExit:
     '@Ignore UnhandledOnErrorResumeNext
@@ -532,7 +564,7 @@ Private Sub TestPopEmtyCollection()
 
     'Assert:
     Dim Dummy As Variant
-    Dummy = PCollections.Pop(Coll)
+    Dummy = pcol_PCollections.pcol_Pop(Coll)
     
 Assert:
     Assert.Fail "Expected error was not raised"
@@ -559,7 +591,7 @@ Private Sub TestReverse()
     Coll1.Add "3c"
 
     Dim Coll2 As Collection
-    Set Coll2 = PCollections.Reverse(Coll1)
+    Set Coll2 = pcol_PCollections.pcol_Reverse(Coll1)
 
     'Assert:
     Assert.AreEqual Coll1(3), Coll2(1)
